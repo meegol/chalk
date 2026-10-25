@@ -6,6 +6,7 @@ const bigShoulders = Big_Shoulders({
   variable: "--font-big-shoulders",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
+  adjustFontFallback: false,
 });
 
 const archivo = Archivo({
