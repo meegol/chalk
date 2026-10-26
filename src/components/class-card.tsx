@@ -25,7 +25,7 @@ export function ClassCard({
   const live = !ended && cls.startsAt <= now;
   const body = (
     <div className="flex min-w-0 flex-1 items-stretch gap-4">
-      <div className="flex w-16 shrink-0 flex-col justify-center border-r-2 border-ink pr-3 text-right">
+      <div className="flex w-[4.5rem] shrink-0 flex-col justify-center border-r-2 border-ink pr-3 text-right">
         <span className="font-display text-3xl font-extrabold leading-none">{time}</span>
         <span className="text-[11px] font-semibold uppercase tracking-wider text-ink-soft">{meridiem}</span>
       </div>

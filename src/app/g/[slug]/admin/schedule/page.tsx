@@ -16,7 +16,8 @@ export default async function SchedulePage({ params, searchParams }: PageProps<"
   const { slug } = await params;
   const sp = await searchParams;
   const { gym } = await requireStaff(slug);
-  const today = dayKey(new Date(), gym.timezone);
+  const now = new Date();
+  const today = dayKey(now, gym.timezone);
   const selected = parseDay(sp.day, today);
   // Weeks start on Monday, the way gyms program.
   const weekStart = addDays(selected, -((weekdayOfKey(selected) + 6) % 7));
@@ -76,7 +77,11 @@ export default async function SchedulePage({ params, searchParams }: PageProps<"
                 <Link
                   key={c.id}
                   href={`${base}/${c.id}`}
-                  className={cn("rounded-sm border border-line bg-surface p-2 hover:border-ink", c.cancelledAt && "line-through opacity-50")}
+                  className={cn(
+                    "rounded-sm border border-line bg-surface p-2 hover:border-ink",
+                    c.cancelledAt && "line-through opacity-50",
+                    !c.cancelledAt && c.startsAt.getTime() + c.durationMin * 60_000 < now.getTime() && "opacity-50",
+                  )}
                 >
                   <p className="font-display text-lg font-bold leading-none">{formatTime(c.startsAt, gym.timezone)}</p>
                   <p className="truncate text-sm font-semibold">{c.title}</p>

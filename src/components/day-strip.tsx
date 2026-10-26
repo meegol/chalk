@@ -17,7 +17,7 @@ export function DayStrip({
   counts?: Map<string, number>;
 }) {
   return (
-    <nav className="no-scrollbar -mx-4 flex snap-x gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" aria-label="Pick a day">
+    <nav className="no-scrollbar -mx-4 flex snap-x scroll-px-4 gap-1.5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:scroll-px-0 sm:px-0" aria-label="Pick a day">
       {days.map((d) => {
         const active = d === selected;
         return (
