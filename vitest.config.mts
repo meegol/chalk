@@ -7,12 +7,16 @@ config({ quiet: true });
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
-      "server-only": path.resolve(__dirname, "test/server-only-stub.ts"),
+      "@": path.resolve(import.meta.dirname, "src"),
+      "server-only": path.resolve(import.meta.dirname, "test/server-only-stub.ts"),
     },
   },
   test: {
-    env: { DATABASE_URL: process.env.TEST_DATABASE_URL ?? "" },
+    env: {
+      DATABASE_URL: process.env.TEST_DATABASE_URL ?? "",
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY ?? "sk_test_placeholder",
+      STRIPE_WEBHOOK_SECRET: "whsec_test_secret",
+    },
     globalSetup: ["test/global-setup.ts"],
     fileParallelism: false,
     testTimeout: 20_000,
