@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { db, schema } from "@/db";
 import { CopyButton } from "@/components/copy-button";
 import { ActionForm } from "@/components/form-bits";
-import { Button, Card, Chip, Field, Input, PageTitle, SectionHeading, Select } from "@/components/ui";
+import { Button, ButtonLink, Card, Chip, Field, Input, PageTitle, SectionHeading, Select } from "@/components/ui";
 import { requireStaff } from "@/lib/tenant";
 import { formatDateTime } from "@/lib/time";
 import { appUrl } from "@/lib/url";
@@ -36,7 +36,12 @@ export default async function SettingsPage({ params }: PageProps<"/g/[slug]/admi
 
   return (
     <>
-      <PageTitle>Settings</PageTitle>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <PageTitle>Settings</PageTitle>
+        <ButtonLink href={`/g/${slug}/admin/settings/billing`} variant="secondary" size="sm">
+          Billing & payouts {gym.saasPlan === "pro" ? "· Pro" : "· Free"}
+        </ButtonLink>
+      </div>
       <div className="grid gap-10 lg:grid-cols-2">
         <section>
           <SectionHeading>Gym</SectionHeading>
