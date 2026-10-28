@@ -3,6 +3,11 @@
  * prints the price id for STRIPE_PRO_PRICE_ID. Safe to rerun.
  *
  *   npm run stripe:setup
+ *
+ * Pass a deployed app URL to also (re)create its webhook endpoint and print
+ * the signing secret for STRIPE_WEBHOOK_SECRET:
+ *
+ *   npm run stripe:setup -- https://your-app.vercel.app
  */
 import "dotenv/config";
 import Stripe from "stripe";
@@ -30,6 +35,27 @@ async function main() {
     });
   }
   console.log(`STRIPE_PRO_PRICE_ID=${price.id}`);
+
+  const appUrl = process.argv[2];
+  if (appUrl) {
+    const url = new URL("/api/webhooks/stripe", appUrl).toString();
+    // Signing secrets are only returned on creation, so replace any existing endpoint.
+    const existing = (await stripe.webhookEndpoints.list({ limit: 100 })).data.filter((e) => e.url === url);
+    for (const e of existing) await stripe.webhookEndpoints.del(e.id);
+    const endpoint = await stripe.webhookEndpoints.create({
+      url,
+      description: "Chalk",
+      enabled_events: [
+        "checkout.session.completed",
+        "checkout.session.async_payment_succeeded",
+        "customer.subscription.created",
+        "customer.subscription.updated",
+        "customer.subscription.deleted",
+        "account.updated",
+      ],
+    });
+    console.log(`STRIPE_WEBHOOK_SECRET=${endpoint.secret}`);
+  }
 }
 
 main().catch((e) => {
