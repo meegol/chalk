@@ -2,6 +2,9 @@
 
 Class booking, memberships and front-desk check-in for strength and CrossFit-style gyms.
 
+**[Live demo → chalk-box.vercel.app](https://chalk-box.vercel.app)** · sign in as `owner@chalk.dev`, `coach@chalk.dev`
+or `member@chalk.dev` with password `chalkdemo`. The demo resets every night.
+
 A gym signs up, sets a weekly timetable and its membership plans, and members book classes, buy passes and
 check in at the door from their phones. Chalk is multi-tenant: one deployment serves any number of gyms, and one
 login can coach at one gym and train at another.
@@ -152,10 +155,14 @@ Better Auth · Stripe · Vitest
 
 ## Deploying
 
-Vercel plus a Postgres database such as Neon. Set the variables from `.env.example`, run `npm run db:migrate`
-against the production database, and add a Stripe webhook endpoint for `/api/webhooks/stripe` that listens to
-`checkout.session.completed`, `checkout.session.async_payment_succeeded`, `customer.subscription.*` and, from
-connected accounts, `account.updated`.
+The live demo runs on Vercel (functions in `sin1`, next to a Neon Postgres database in Singapore).
+
+1. Create a Vercel project from the repo and add a Neon database from the Storage tab; that sets `DATABASE_URL`.
+2. Set the other variables from `.env.example`. `DEMO_MODE=1` shows the demo logins and reseeds the demo gym
+   on the nightly cron.
+3. `npm run stripe:setup -- https://your-app.vercel.app` creates the Pro price and the webhook endpoint and
+   prints `STRIPE_PRO_PRICE_ID` and `STRIPE_WEBHOOK_SECRET`.
+4. Push. The `vercel-build` script runs migrations before `next build`.
 
 ## Not in v1
 
