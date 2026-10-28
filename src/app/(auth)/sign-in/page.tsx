@@ -13,6 +13,16 @@ export default async function SignInPage({ searchParams }: PageProps<"/sign-in">
     <>
       <h1 className="font-display text-5xl font-extrabold uppercase leading-none">Sign in</h1>
       <p className="mb-8 mt-2 text-ink-soft">Welcome back. Your next class is waiting.</p>
+      {process.env.DEMO_MODE === "1" && (
+        <div className="mb-6 rounded-sm border-2 border-dashed border-ink p-4 text-sm">
+          <p className="font-semibold">Demo accounts</p>
+          <p className="mt-1 text-ink-soft">
+            <span className="font-mono text-ink">owner@chalk.dev</span>, <span className="font-mono text-ink">coach@chalk.dev</span>{" "}
+            or <span className="font-mono text-ink">member@chalk.dev</span>, password{" "}
+            <span className="font-mono text-ink">chalkdemo</span>. Data resets daily.
+          </p>
+        </div>
+      )}
       <AuthForm action={signIn} mode="sign-in" next={target} />
       <p className="mt-6 text-sm text-ink-soft">
         New here?{" "}
